@@ -1,34 +1,23 @@
 # Qiita MCP Server
 
-Qiita API v2 の全機能を MCP (Model Context Protocol) 経由で AI から操作できる stdio サーバーです。
+Qiita API v2 の全機能 (68 ツール) を MCP (Model Context Protocol) 経由で AI から操作できる stdio サーバーです。
 
-## セットアップ
+## クイックスタート
 
 ### 1. アクセストークンの取得
 
 [Qiita の設定ページ](https://qiita.com/settings/applications) でアクセストークンを発行してください。
 
-### 2. インストール・起動
+### 2. Claude Desktop で使う
 
-```bash
-# npx で直接起動
-QIITA_ACCESS_TOKEN=your_token npx qiita-mcp
-
-# またはグローバルインストール
-npm install -g qiita-mcp
-QIITA_ACCESS_TOKEN=your_token qiita-mcp
-```
-
-### 3. Claude Desktop での設定
-
-`claude_desktop_config.json` に以下を追加:
+`claude_desktop_config.json` に以下を追加するだけ:
 
 ```json
 {
   "mcpServers": {
     "qiita": {
       "command": "npx",
-      "args": ["qiita-mcp"],
+      "args": ["-y", "@sunu-py-jp/qiita-mcp"],
       "env": {
         "QIITA_ACCESS_TOKEN": "your_token_here"
       }
@@ -37,13 +26,45 @@ QIITA_ACCESS_TOKEN=your_token qiita-mcp
 }
 ```
 
-### 4. Claude Code での設定
+> **設定ファイルの場所**
+> - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+> - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+### 3. Claude Code で使う
 
 ```bash
-claude mcp add qiita -- npx qiita-mcp
+claude mcp add qiita -e QIITA_ACCESS_TOKEN=your_token -- npx -y @sunu-py-jp/qiita-mcp
 ```
 
-環境変数 `QIITA_ACCESS_TOKEN` を設定してください。
+### 4. その他の MCP クライアント
+
+```bash
+# npx で直接起動 (インストール不要)
+QIITA_ACCESS_TOKEN=your_token npx -y @sunu-py-jp/qiita-mcp
+
+# またはグローバルインストール
+npm install -g @sunu-py-jp/qiita-mcp
+QIITA_ACCESS_TOKEN=your_token qiita-mcp
+```
+
+## Qiita Team での利用
+
+Qiita Team で使用する場合は `QIITA_BASE_URL` 環境変数を追加してください:
+
+```json
+{
+  "mcpServers": {
+    "qiita": {
+      "command": "npx",
+      "args": ["-y", "@sunu-py-jp/qiita-mcp"],
+      "env": {
+        "QIITA_ACCESS_TOKEN": "your_token_here",
+        "QIITA_BASE_URL": "https://your-team.qiita.com"
+      }
+    }
+  }
+}
+```
 
 ## 提供ツール一覧 (68 tools)
 
@@ -155,28 +176,15 @@ claude mcp add qiita -- npx qiita-mcp
 | `delete_template` | テンプレートを削除 |
 | `expand_template` | テンプレート変数を展開 |
 
-## Qiita Team での利用
-
-Qiita Team で使用する場合は、環境変数でベース URL を変更してください:
-
-```bash
-QIITA_BASE_URL=https://your-team.qiita.com
-QIITA_ACCESS_TOKEN=your_token
-```
-
 ## 開発
 
 ```bash
-# 依存関係のインストール
+git clone https://github.com/sunu-py-jp/Qiita-MCP.git
+cd Qiita-MCP
 npm install
-
-# ビルド
 npm run build
-
-# 開発モード (ファイル変更時に自動リビルド)
-npm run dev
 ```
 
 ## ライセンス
 
-MIT
+[MIT](LICENSE)

@@ -1,18 +1,38 @@
 {
-  "name": "qiita-mcp",
+  "name": "@sunu-py-jp/qiita-mcp",
   "version": "0.1.0",
-  "description": "MCP server for Qiita API v2",
+  "description": "MCP server for Qiita API v2 — 68 tools covering the full Qiita API",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "qiita-mcp": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": ["qiita", "mcp", "model-context-protocol", "ai"],
+  "keywords": [
+    "qiita",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "claude",
+    "llm",
+    "stdio"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunu-py-jp/Qiita-MCP.git"
+  },
+  "homepage": "https://github.com/sunu-py-jp/Qiita-MCP",
+  "bugs": {
+    "url": "https://github.com/sunu-py-jp/Qiita-MCP/issues"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
