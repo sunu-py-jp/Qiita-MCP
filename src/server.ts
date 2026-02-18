@@ -1,0 +1,18 @@
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { allTools } from "./tools/index.js";
+
+export function createServer(): McpServer {
+  const server = new McpServer({
+    name: "qiita-mcp",
+    version: "0.1.0",
+  });
+
+  for (const tool of allTools) {
+    server.registerTool(tool.name, {
+      description: tool.description,
+      inputSchema: tool.schema,
+    }, tool.handler as Parameters<typeof server.registerTool>[2]);
+  }
+
+  return server;
+}
