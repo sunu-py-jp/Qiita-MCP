@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
 
@@ -61,7 +61,7 @@ export const templateTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.get(
-        `/templates/${args.template_id as string}`
+        p`/templates/${args.template_id as string}`
       );
       return jsonResult(data);
     }),
@@ -85,7 +85,7 @@ export const templateTools: ToolDefinition[] = [
       if (args.body !== undefined) body.body = args.body;
       if (args.tags !== undefined) body.tags = args.tags;
       const data = await qiitaClient.patch(
-        `/templates/${templateId}`,
+        p`/templates/${templateId}`,
         body
       );
       return jsonResult(data);
@@ -99,7 +99,7 @@ export const templateTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/templates/${args.template_id as string}`
+        p`/templates/${args.template_id as string}`
       );
       return textResult("Template deleted successfully.");
     }),

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { QiitaNotFoundError, withErrorHandler } from "../errors.js";
 
@@ -34,7 +34,7 @@ export const userTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const userId = args.user_id as string;
-      const result = await qiitaClient.get(`/users/${userId}`);
+      const result = await qiitaClient.get(p`/users/${userId}`);
       return jsonResult(result);
     }),
   },
@@ -54,7 +54,7 @@ export const userTools: ToolDefinition[] = [
       const page = args.page as number | undefined;
       const perPage = args.per_page as number | undefined;
       const result = await qiitaClient.getPaginated(
-        `/users/${userId}/followees`,
+        p`/users/${userId}/followees`,
         page,
         perPage
       );
@@ -77,7 +77,7 @@ export const userTools: ToolDefinition[] = [
       const page = args.page as number | undefined;
       const perPage = args.per_page as number | undefined;
       const result = await qiitaClient.getPaginated(
-        `/users/${userId}/followers`,
+        p`/users/${userId}/followers`,
         page,
         perPage
       );
@@ -92,7 +92,7 @@ export const userTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const userId = args.user_id as string;
-      await qiitaClient.put(`/users/${userId}/following`);
+      await qiitaClient.put(p`/users/${userId}/following`);
       return textResult(`Successfully followed user: ${userId}`);
     }),
   },
@@ -104,7 +104,7 @@ export const userTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const userId = args.user_id as string;
-      await qiitaClient.delete(`/users/${userId}/following`);
+      await qiitaClient.delete(p`/users/${userId}/following`);
       return textResult(`Successfully unfollowed user: ${userId}`);
     }),
   },
@@ -118,7 +118,7 @@ export const userTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const userId = args.user_id as string;
       try {
-        await qiitaClient.get(`/users/${userId}/following`);
+        await qiitaClient.get(p`/users/${userId}/following`);
         return textResult("Following");
       } catch (error) {
         if (error instanceof QiitaNotFoundError) {
@@ -136,7 +136,7 @@ export const userTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
-      const result = await qiitaClient.get(`/items/${itemId}/likes`);
+      const result = await qiitaClient.get(p`/items/${itemId}/likes`);
       return jsonResult(result);
     }),
   },
@@ -149,7 +149,7 @@ export const userTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
       try {
-        await qiitaClient.get(`/items/${itemId}/stock`);
+        await qiitaClient.get(p`/items/${itemId}/stock`);
         return textResult("Stocked");
       } catch (error) {
         if (error instanceof QiitaNotFoundError) {

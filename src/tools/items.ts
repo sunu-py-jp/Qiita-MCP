@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
 
@@ -26,11 +26,11 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const query = args.query as string | undefined;
-      const path = query
+      const queryPath = query
         ? `/items?query=${encodeURIComponent(query)}`
         : "/items";
       const result = await qiitaClient.getPaginated(
-        path,
+        queryPath,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -50,7 +50,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.get(
-        `/items/${args.item_id as string}`
+        p`/items/${args.item_id as string}`
       );
       return jsonResult(data);
     }),
@@ -104,7 +104,7 @@ export const itemTools: ToolDefinition[] = [
       if (args.body !== undefined) body.body = args.body;
       if (args.tags !== undefined) body.tags = args.tags;
       if (args.private !== undefined) body.private = args.private;
-      const data = await qiitaClient.patch(`/items/${itemId}`, body);
+      const data = await qiitaClient.patch(p`/items/${itemId}`, body);
       return jsonResult(data);
     }),
   },
@@ -115,7 +115,7 @@ export const itemTools: ToolDefinition[] = [
       item_id: z.string().describe("Item ID to delete"),
     },
     handler: withErrorHandler(async (args) => {
-      await qiitaClient.delete(`/items/${args.item_id as string}`);
+      await qiitaClient.delete(p`/items/${args.item_id as string}`);
       return textResult("Item deleted successfully.");
     }),
   },
@@ -132,7 +132,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/users/${args.user_id as string}/items`,
+        p`/users/${args.user_id as string}/items`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -157,7 +157,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/users/${args.user_id as string}/stocks`,
+        p`/users/${args.user_id as string}/stocks`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -182,7 +182,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/items/${args.item_id as string}/stockers`,
+        p`/items/${args.item_id as string}/stockers`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -202,7 +202,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.put(
-        `/items/${args.item_id as string}/stock`
+        p`/items/${args.item_id as string}/stock`
       );
       return textResult("Item stocked successfully.");
     }),
@@ -215,7 +215,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/items/${args.item_id as string}/stock`
+        p`/items/${args.item_id as string}/stock`
       );
       return textResult("Item unstocked successfully.");
     }),

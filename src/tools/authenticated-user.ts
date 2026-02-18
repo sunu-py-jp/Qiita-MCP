@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult } from "../types.js";
+import { jsonResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
 

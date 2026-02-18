@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
 
@@ -83,7 +83,7 @@ export const teamTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/team_invitations/${encodeURIComponent(args.email as string)}`
+        p`/team_invitations/${args.email as string}`
       );
       return textResult("Team invitation deleted successfully.");
     }),
@@ -96,7 +96,7 @@ export const teamTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/remove_team_member/${args.user_id as string}`
+        p`/remove_team_member/${args.user_id as string}`
       );
       return textResult("Team member removed successfully.");
     }),

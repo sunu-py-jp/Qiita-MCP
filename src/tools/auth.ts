@@ -1,8 +1,25 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
+
+function maskToken(value: string): string {
+  if (value.length <= 8) return "****";
+  return value.slice(0, 4) + "****" + value.slice(-4);
+}
+
+function maskSensitiveFields(data: unknown): unknown {
+  if (typeof data !== "object" || data === null) return data;
+  const record = data as Record<string, unknown>;
+  const masked = { ...record };
+  for (const key of ["token", "client_secret"]) {
+    if (typeof masked[key] === "string") {
+      masked[key] = maskToken(masked[key] as string);
+    }
+  }
+  return masked;
+}
 
 export const authTools: ToolDefinition[] = [
   {
@@ -19,7 +36,7 @@ export const authTools: ToolDefinition[] = [
         client_secret: args.client_secret,
         code: args.code,
       });
-      return jsonResult(data);
+      return jsonResult(maskSensitiveFields(data));
     }),
   },
   {
@@ -30,7 +47,7 @@ export const authTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/access_tokens/${args.access_token as string}`
+        p`/access_tokens/${args.access_token as string}`
       );
       return textResult("Access token deleted successfully.");
     }),
@@ -50,7 +67,7 @@ export const authTools: ToolDefinition[] = [
         client_secret: args.client_secret,
         code: args.code,
       });
-      return jsonResult(data);
+      return jsonResult(maskSensitiveFields(data));
     }),
   },
   {
@@ -61,7 +78,7 @@ export const authTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/team_access_tokens/${args.team_access_token as string}`
+        p`/team_access_tokens/${args.team_access_token as string}`
       );
       return textResult("Team access token deleted successfully.");
     }),

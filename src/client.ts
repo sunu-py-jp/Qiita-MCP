@@ -26,6 +26,16 @@ function parseLinkHeader(
   return result;
 }
 
+function validateAbsoluteUrl(url: string): void {
+  const parsed = new URL(url);
+  const allowed = new URL(config.baseUrl);
+  if (parsed.hostname !== allowed.hostname) {
+    throw new Error(
+      `SSRF blocked: request to ${parsed.hostname} is not allowed. Only ${allowed.hostname} is permitted.`
+    );
+  }
+}
+
 class QiitaClient {
   private get headers(): Record<string, string> {
     return {
@@ -39,7 +49,14 @@ class QiitaClient {
     path: string,
     body?: unknown
   ): Promise<{ data: T; response: Response }> {
-    const url = path.startsWith("http") ? path : `${config.apiBaseUrl}${path}`;
+    let url: string;
+    if (path.startsWith("http")) {
+      validateAbsoluteUrl(path);
+      url = path;
+    } else {
+      url = `${config.apiBaseUrl}${path}`;
+    }
+
     const res = await fetch(url, {
       method,
       headers: this.headers,

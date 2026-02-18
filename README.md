@@ -15,7 +15,7 @@ Qiita API v2 の全機能 (68 ツール) を MCP (Model Context Protocol) 経由
 ```json
 {
   "mcpServers": {
-    "qiita": {
+    "qiita-mcp": {
       "command": "npx",
       "args": ["-y", "@sunu-py-jp/qiita-mcp"],
       "env": {

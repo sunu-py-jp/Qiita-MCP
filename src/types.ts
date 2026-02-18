@@ -34,3 +34,15 @@ export function jsonResult(data: unknown): ToolResult {
 export function errorResult(message: string): ToolResult {
   return { content: [{ type: "text", text: message }], isError: true };
 }
+
+/** Tagged template that applies encodeURIComponent to all interpolated values. */
+export function path(
+  strings: TemplateStringsArray,
+  ...values: unknown[]
+): string {
+  return strings.reduce(
+    (result, str, i) =>
+      result + str + (i < values.length ? encodeURIComponent(String(values[i])) : ""),
+    ""
+  );
+}

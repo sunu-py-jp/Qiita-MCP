@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
 
@@ -13,7 +13,7 @@ export const commentTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
-      const data = await qiitaClient.get(`/items/${itemId}/comments`);
+      const data = await qiitaClient.get(p`/items/${itemId}/comments`);
       return jsonResult(data);
     }),
   },
@@ -27,7 +27,7 @@ export const commentTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
       const body = args.body as string;
-      const data = await qiitaClient.post(`/items/${itemId}/comments`, {
+      const data = await qiitaClient.post(p`/items/${itemId}/comments`, {
         body,
       });
       return jsonResult(data);
@@ -41,7 +41,7 @@ export const commentTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
-      const data = await qiitaClient.get(`/comments/${commentId}`);
+      const data = await qiitaClient.get(p`/comments/${commentId}`);
       return jsonResult(data);
     }),
   },
@@ -55,7 +55,7 @@ export const commentTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
       const body = args.body as string;
-      const data = await qiitaClient.patch(`/comments/${commentId}`, {
+      const data = await qiitaClient.patch(p`/comments/${commentId}`, {
         body,
       });
       return jsonResult(data);
@@ -69,7 +69,7 @@ export const commentTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
-      await qiitaClient.delete(`/comments/${commentId}`);
+      await qiitaClient.delete(p`/comments/${commentId}`);
       return textResult("Comment deleted successfully.");
     }),
   },
@@ -96,7 +96,7 @@ export const commentTools: ToolDefinition[] = [
       if (args.created_at) payload.created_at = args.created_at as string;
       if (args.updated_at) payload.updated_at = args.updated_at as string;
       const data = await qiitaClient.post(
-        `/items/${itemId}/imported_comments`,
+        p`/items/${itemId}/imported_comments`,
         payload
       );
       return jsonResult(data);

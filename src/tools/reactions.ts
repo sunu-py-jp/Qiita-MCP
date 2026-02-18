@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ToolDefinition } from "../types.js";
-import { jsonResult, textResult } from "../types.js";
+import { jsonResult, textResult, path as p } from "../types.js";
 import { qiitaClient } from "../client.js";
 import { withErrorHandler } from "../errors.js";
 
@@ -16,7 +16,7 @@ export const reactionTools: ToolDefinition[] = [
       const itemId = args.item_id as string;
       const name = args.name as string;
       const result = await qiitaClient.post(
-        `/items/${itemId}/reactions`,
+        p`/items/${itemId}/reactions`,
         { name }
       );
       return jsonResult(result);
@@ -31,7 +31,7 @@ export const reactionTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
       const result = await qiitaClient.get(
-        `/items/${itemId}/reactions`
+        p`/items/${itemId}/reactions`
       );
       return jsonResult(result);
     }),
@@ -47,7 +47,7 @@ export const reactionTools: ToolDefinition[] = [
       const itemId = args.item_id as string;
       const reactionName = args.reaction_name as string;
       await qiitaClient.delete(
-        `/items/${itemId}/reactions/${reactionName}`
+        p`/items/${itemId}/reactions/${reactionName}`
       );
       return textResult("Reaction deleted successfully");
     }),
@@ -63,7 +63,7 @@ export const reactionTools: ToolDefinition[] = [
       const commentId = args.comment_id as string;
       const name = args.name as string;
       const result = await qiitaClient.post(
-        `/comments/${commentId}/reactions`,
+        p`/comments/${commentId}/reactions`,
         { name }
       );
       return jsonResult(result);
@@ -78,7 +78,7 @@ export const reactionTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
       const result = await qiitaClient.get(
-        `/comments/${commentId}/reactions`
+        p`/comments/${commentId}/reactions`
       );
       return jsonResult(result);
     }),
@@ -94,7 +94,7 @@ export const reactionTools: ToolDefinition[] = [
       const commentId = args.comment_id as string;
       const reactionName = args.reaction_name as string;
       await qiitaClient.delete(
-        `/comments/${commentId}/reactions/${reactionName}`
+        p`/comments/${commentId}/reactions/${reactionName}`
       );
       return textResult("Reaction deleted successfully");
     }),
@@ -111,7 +111,7 @@ export const reactionTools: ToolDefinition[] = [
       const commentId = args.comment_id as string;
       const name = args.name as string;
       const result = await qiitaClient.post(
-        `/project_comments/${commentId}/reactions`,
+        p`/project_comments/${commentId}/reactions`,
         { name }
       );
       return jsonResult(result);
