@@ -10,7 +10,7 @@ export const teamTools: ToolDefinition[] = [
     description: "List teams the authenticated user belongs to",
     schema: {},
     handler: withErrorHandler(async () => {
-      const data = await qiitaClient.get("/api/v2/teams");
+      const data = await qiitaClient.get("/teams");
       return jsonResult(data);
     }),
   },
@@ -26,7 +26,7 @@ export const teamTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        "/api/v2/team_memberships",
+        "/team_memberships",
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -50,7 +50,7 @@ export const teamTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        "/api/v2/team_invitations",
+        "/team_invitations",
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -69,7 +69,7 @@ export const teamTools: ToolDefinition[] = [
       email: z.string().describe("Email address to invite"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/team_invitations", {
+      const data = await qiitaClient.post("/team_invitations", {
         email: args.email,
       });
       return jsonResult(data);
@@ -83,7 +83,7 @@ export const teamTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/team_invitations/${encodeURIComponent(args.email as string)}`
+        `/team_invitations/${encodeURIComponent(args.email as string)}`
       );
       return textResult("Team invitation deleted successfully.");
     }),
@@ -96,7 +96,7 @@ export const teamTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/remove_team_member/${args.user_id as string}`
+        `/remove_team_member/${args.user_id as string}`
       );
       return textResult("Team member removed successfully.");
     }),

@@ -23,7 +23,7 @@ export const tagTools: ToolDefinition[] = [
       const page = args.page as number | undefined;
       const perPage = args.per_page as number | undefined;
       const sort = args.sort as string | undefined;
-      const path = sort ? `/api/v2/tags?sort=${sort}` : "/api/v2/tags";
+      const path = sort ? `/tags?sort=${sort}` : "/tags";
       const data = await qiitaClient.getPaginated(path, page, perPage);
       return jsonResult(data);
     }),
@@ -38,7 +38,7 @@ export const tagTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const tagId = args.tag_id as string;
-      const data = await qiitaClient.get(`/api/v2/tags/${tagId}`);
+      const data = await qiitaClient.get(`/tags/${tagId}`);
       return jsonResult(data);
     }),
   },
@@ -58,7 +58,7 @@ export const tagTools: ToolDefinition[] = [
       const page = args.page as number | undefined;
       const perPage = args.per_page as number | undefined;
       const data = await qiitaClient.getPaginated(
-        `/api/v2/tags/${tagId}/items`,
+        `/tags/${tagId}/items`,
         page,
         perPage
       );
@@ -81,7 +81,7 @@ export const tagTools: ToolDefinition[] = [
       const page = args.page as number | undefined;
       const perPage = args.per_page as number | undefined;
       const data = await qiitaClient.getPaginated(
-        `/api/v2/users/${userId}/following_tags`,
+        `/users/${userId}/following_tags`,
         page,
         perPage
       );
@@ -96,7 +96,7 @@ export const tagTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const tagId = args.tag_id as string;
-      await qiitaClient.put(`/api/v2/tags/${tagId}/following`);
+      await qiitaClient.put(`/tags/${tagId}/following`);
       return textResult(`Now following tag: ${tagId}`);
     }),
   },
@@ -108,7 +108,7 @@ export const tagTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const tagId = args.tag_id as string;
-      await qiitaClient.delete(`/api/v2/tags/${tagId}/following`);
+      await qiitaClient.delete(`/tags/${tagId}/following`);
       return textResult(`Unfollowed tag: ${tagId}`);
     }),
   },
@@ -131,7 +131,7 @@ export const tagTools: ToolDefinition[] = [
       const payload: Record<string, unknown> = { name };
       if (versions) payload.versions = versions;
       const data = await qiitaClient.post(
-        `/api/v2/items/${itemId}/taggings`,
+        `/items/${itemId}/taggings`,
         payload
       );
       return jsonResult(data);
@@ -148,7 +148,7 @@ export const tagTools: ToolDefinition[] = [
       const itemId = args.item_id as string;
       const taggingId = args.tagging_id as string;
       await qiitaClient.delete(
-        `/api/v2/items/${itemId}/taggings/${taggingId}`
+        `/items/${itemId}/taggings/${taggingId}`
       );
       return textResult("Tagging removed successfully.");
     }),

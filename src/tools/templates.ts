@@ -22,7 +22,7 @@ export const templateTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        "/api/v2/templates",
+        "/templates",
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -45,7 +45,7 @@ export const templateTools: ToolDefinition[] = [
         .describe("Tags (array of {name, versions?})"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/templates", {
+      const data = await qiitaClient.post("/templates", {
         title: args.title,
         body: args.body,
         tags: args.tags,
@@ -61,7 +61,7 @@ export const templateTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.get(
-        `/api/v2/templates/${args.template_id as string}`
+        `/templates/${args.template_id as string}`
       );
       return jsonResult(data);
     }),
@@ -85,7 +85,7 @@ export const templateTools: ToolDefinition[] = [
       if (args.body !== undefined) body.body = args.body;
       if (args.tags !== undefined) body.tags = args.tags;
       const data = await qiitaClient.patch(
-        `/api/v2/templates/${templateId}`,
+        `/templates/${templateId}`,
         body
       );
       return jsonResult(data);
@@ -99,7 +99,7 @@ export const templateTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/templates/${args.template_id as string}`
+        `/templates/${args.template_id as string}`
       );
       return textResult("Template deleted successfully.");
     }),
@@ -117,7 +117,7 @@ export const templateTools: ToolDefinition[] = [
         .describe("Tags (array of {name, versions?})"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/expanded_templates", {
+      const data = await qiitaClient.post("/expanded_templates", {
         body: args.body,
         tags: args.tags,
       });

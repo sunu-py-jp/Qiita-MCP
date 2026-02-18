@@ -17,7 +17,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        "/api/v2/groups",
+        "/groups",
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -41,7 +41,7 @@ export const groupTools: ToolDefinition[] = [
         .describe("Whether the group is private (default: false)"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/groups", {
+      const data = await qiitaClient.post("/groups", {
         name: args.name,
         url_name: args.url_name,
         private: args.private ?? false,
@@ -57,7 +57,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.get(
-        `/api/v2/groups/${args.url_name as string}`
+        `/groups/${args.url_name as string}`
       );
       return jsonResult(data);
     }),
@@ -75,7 +75,7 @@ export const groupTools: ToolDefinition[] = [
       const body: Record<string, unknown> = {};
       if (args.name !== undefined) body.name = args.name;
       if (args.private !== undefined) body.private = args.private;
-      const data = await qiitaClient.patch(`/api/v2/groups/${urlName}`, body);
+      const data = await qiitaClient.patch(`/groups/${urlName}`, body);
       return jsonResult(data);
     }),
   },
@@ -87,7 +87,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/groups/${args.url_name as string}`
+        `/groups/${args.url_name as string}`
       );
       return textResult("Group deleted successfully.");
     }),
@@ -105,7 +105,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/api/v2/groups/${args.url_name as string}/members`,
+        `/groups/${args.url_name as string}/members`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -128,7 +128,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.put(
-        `/api/v2/groups/${args.url_name as string}/members`,
+        `/groups/${args.url_name as string}/members`,
         { user_ids: args.user_ids }
       );
       return jsonResult(data);
@@ -143,7 +143,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/groups/${args.url_name as string}/members/${args.user_id as string}`
+        `/groups/${args.url_name as string}/members/${args.user_id as string}`
       );
       return textResult("Group member removed successfully.");
     }),
@@ -157,7 +157,7 @@ export const groupTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.get(
-        `/api/v2/groups/${args.url_name as string}/members/${args.user_id as string}`
+        `/groups/${args.url_name as string}/members/${args.user_id as string}`
       );
       return jsonResult(data);
     }),

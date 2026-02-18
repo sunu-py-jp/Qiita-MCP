@@ -27,8 +27,8 @@ export const itemTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const query = args.query as string | undefined;
       const path = query
-        ? `/api/v2/items?query=${encodeURIComponent(query)}`
-        : "/api/v2/items";
+        ? `/items?query=${encodeURIComponent(query)}`
+        : "/items";
       const result = await qiitaClient.getPaginated(
         path,
         args.page as number | undefined,
@@ -50,7 +50,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const data = await qiitaClient.get(
-        `/api/v2/items/${args.item_id as string}`
+        `/items/${args.item_id as string}`
       );
       return jsonResult(data);
     }),
@@ -74,7 +74,7 @@ export const itemTools: ToolDefinition[] = [
         .describe("Whether to post to X (Twitter) (default: false)"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/items", {
+      const data = await qiitaClient.post("/items", {
         title: args.title,
         body: args.body,
         tags: args.tags,
@@ -104,7 +104,7 @@ export const itemTools: ToolDefinition[] = [
       if (args.body !== undefined) body.body = args.body;
       if (args.tags !== undefined) body.tags = args.tags;
       if (args.private !== undefined) body.private = args.private;
-      const data = await qiitaClient.patch(`/api/v2/items/${itemId}`, body);
+      const data = await qiitaClient.patch(`/items/${itemId}`, body);
       return jsonResult(data);
     }),
   },
@@ -115,7 +115,7 @@ export const itemTools: ToolDefinition[] = [
       item_id: z.string().describe("Item ID to delete"),
     },
     handler: withErrorHandler(async (args) => {
-      await qiitaClient.delete(`/api/v2/items/${args.item_id as string}`);
+      await qiitaClient.delete(`/items/${args.item_id as string}`);
       return textResult("Item deleted successfully.");
     }),
   },
@@ -132,7 +132,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/api/v2/users/${args.user_id as string}/items`,
+        `/users/${args.user_id as string}/items`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -157,7 +157,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/api/v2/users/${args.user_id as string}/stocks`,
+        `/users/${args.user_id as string}/stocks`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -182,7 +182,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        `/api/v2/items/${args.item_id as string}/stockers`,
+        `/items/${args.item_id as string}/stockers`,
         args.page as number | undefined,
         args.per_page as number | undefined
       );
@@ -202,7 +202,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.put(
-        `/api/v2/items/${args.item_id as string}/stock`
+        `/items/${args.item_id as string}/stock`
       );
       return textResult("Item stocked successfully.");
     }),
@@ -215,7 +215,7 @@ export const itemTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/items/${args.item_id as string}/stock`
+        `/items/${args.item_id as string}/stock`
       );
       return textResult("Item unstocked successfully.");
     }),
@@ -251,7 +251,7 @@ export const itemTools: ToolDefinition[] = [
       };
       if (args.created_at !== undefined) body.created_at = args.created_at;
       if (args.updated_at !== undefined) body.updated_at = args.updated_at;
-      const data = await qiitaClient.post("/api/v2/imported_items", body);
+      const data = await qiitaClient.post("/imported_items", body);
       return jsonResult(data);
     }),
   },

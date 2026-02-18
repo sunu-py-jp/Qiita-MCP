@@ -13,7 +13,7 @@ export const commentTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
-      const data = await qiitaClient.get(`/api/v2/items/${itemId}/comments`);
+      const data = await qiitaClient.get(`/items/${itemId}/comments`);
       return jsonResult(data);
     }),
   },
@@ -27,7 +27,7 @@ export const commentTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const itemId = args.item_id as string;
       const body = args.body as string;
-      const data = await qiitaClient.post(`/api/v2/items/${itemId}/comments`, {
+      const data = await qiitaClient.post(`/items/${itemId}/comments`, {
         body,
       });
       return jsonResult(data);
@@ -41,7 +41,7 @@ export const commentTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
-      const data = await qiitaClient.get(`/api/v2/comments/${commentId}`);
+      const data = await qiitaClient.get(`/comments/${commentId}`);
       return jsonResult(data);
     }),
   },
@@ -55,7 +55,7 @@ export const commentTools: ToolDefinition[] = [
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
       const body = args.body as string;
-      const data = await qiitaClient.patch(`/api/v2/comments/${commentId}`, {
+      const data = await qiitaClient.patch(`/comments/${commentId}`, {
         body,
       });
       return jsonResult(data);
@@ -69,7 +69,7 @@ export const commentTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const commentId = args.comment_id as string;
-      await qiitaClient.delete(`/api/v2/comments/${commentId}`);
+      await qiitaClient.delete(`/comments/${commentId}`);
       return textResult("Comment deleted successfully.");
     }),
   },
@@ -96,7 +96,7 @@ export const commentTools: ToolDefinition[] = [
       if (args.created_at) payload.created_at = args.created_at as string;
       if (args.updated_at) payload.updated_at = args.updated_at as string;
       const data = await qiitaClient.post(
-        `/api/v2/items/${itemId}/imported_comments`,
+        `/items/${itemId}/imported_comments`,
         payload
       );
       return jsonResult(data);

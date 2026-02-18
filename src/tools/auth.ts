@@ -14,7 +14,7 @@ export const authTools: ToolDefinition[] = [
       code: z.string().describe("Authorization code received from OAuth flow"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/access_tokens", {
+      const data = await qiitaClient.post("/access_tokens", {
         client_id: args.client_id,
         client_secret: args.client_secret,
         code: args.code,
@@ -30,7 +30,7 @@ export const authTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/access_tokens/${args.access_token as string}`
+        `/access_tokens/${args.access_token as string}`
       );
       return textResult("Access token deleted successfully.");
     }),
@@ -45,7 +45,7 @@ export const authTools: ToolDefinition[] = [
       code: z.string().describe("Authorization code received from OAuth flow"),
     },
     handler: withErrorHandler(async (args) => {
-      const data = await qiitaClient.post("/api/v2/team_access_tokens", {
+      const data = await qiitaClient.post("/team_access_tokens", {
         client_id: args.client_id,
         client_secret: args.client_secret,
         code: args.code,
@@ -61,7 +61,7 @@ export const authTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       await qiitaClient.delete(
-        `/api/v2/team_access_tokens/${args.team_access_token as string}`
+        `/team_access_tokens/${args.team_access_token as string}`
       );
       return textResult("Team access token deleted successfully.");
     }),

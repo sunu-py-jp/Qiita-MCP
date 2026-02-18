@@ -10,7 +10,7 @@ export const authenticatedUserTools: ToolDefinition[] = [
     description: "Get the currently authenticated user's profile",
     schema: {},
     handler: withErrorHandler(async () => {
-      const data = await qiitaClient.get("/api/v2/authenticated_user");
+      const data = await qiitaClient.get("/authenticated_user");
       return jsonResult(data);
     }),
   },
@@ -26,7 +26,7 @@ export const authenticatedUserTools: ToolDefinition[] = [
     },
     handler: withErrorHandler(async (args) => {
       const result = await qiitaClient.getPaginated(
-        "/api/v2/authenticated_user/items",
+        "/authenticated_user/items",
         args.page as number | undefined,
         args.per_page as number | undefined
       );
