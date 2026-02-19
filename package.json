@@ -1,6 +1,6 @@
 {
   "name": "@sunu-py-jp/qiita-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for Qiita API v2 — 68 tools covering the full Qiita API",
   "type": "module",
   "main": "dist/index.js",
