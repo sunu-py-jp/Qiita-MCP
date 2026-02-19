@@ -66,6 +66,51 @@ Qiita Team で使用する場合は `QIITA_BASE_URL` 環境変数を追加して
 }
 ```
 
+## ツールフィルタリング
+
+68 ツール全てが不要な場合、環境変数でグループ単位・ツール単位のフィルタリングが可能です。
+
+### `QIITA_ENABLED_GROUPS`
+
+カンマ区切りで `カテゴリ:操作` を指定し、有効にするツールグループを絞り込みます。
+
+- **未設定**: 全ツールが有効（デフォルト）
+- **カテゴリのみ**: そのカテゴリの read/write 両方が有効
+- **カテゴリ:操作**: 指定した操作のツールのみ有効
+
+操作は `read`（GET 系）と `write`（POST/PUT/PATCH/DELETE 系）の 2 種類です。
+
+カテゴリ一覧: `auth`, `authenticated_user`, `items`, `comments`, `tags`, `users`, `reactions`, `teams`, `groups`, `templates`
+
+### `QIITA_DISABLED_TOOLS`
+
+カンマ区切りでツール名を指定し、個別にツールを除外します。`QIITA_ENABLED_GROUPS` でフィルタされた後に適用されます。
+
+### 設定例
+
+```json
+{
+  "mcpServers": {
+    "qiita-mcp": {
+      "command": "npx",
+      "args": ["-y", "@sunu-py-jp/qiita-mcp"],
+      "env": {
+        "QIITA_ACCESS_TOKEN": "your_token_here",
+        "QIITA_ENABLED_GROUPS": "items:read,comments:read",
+        "QIITA_DISABLED_TOOLS": "list_item_stockers"
+      }
+    }
+  }
+}
+```
+
+| ユースケース | 設定 | 結果 |
+|---|---|---|
+| 記事の閲覧のみ | `QIITA_ENABLED_GROUPS=items:read` | 5 ツール |
+| 記事の全操作 | `QIITA_ENABLED_GROUPS=items` | 11 ツール |
+| 記事操作から削除を除外 | `QIITA_ENABLED_GROUPS=items` + `QIITA_DISABLED_TOOLS=delete_item` | 10 ツール |
+| 特定ツールだけ除外 | `QIITA_DISABLED_TOOLS=delete_item,delete_comment` | 66 ツール |
+
 ## 提供ツール一覧 (68 tools)
 
 ### 認証 (auth) - 4 tools
